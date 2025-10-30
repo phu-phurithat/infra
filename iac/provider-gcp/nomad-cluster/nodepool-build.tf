@@ -116,7 +116,7 @@ resource "google_compute_instance_template" "build" {
     boot         = true
     source_image = data.google_compute_image.build_source_image.id
     disk_size_gb = var.build_cluster_root_disk_size_gb
-    disk_type    = "pd-ssd"
+    disk_type    = "pd-standard"
   }
 
   disk {
@@ -124,7 +124,7 @@ resource "google_compute_instance_template" "build" {
     boot         = false
     type         = "PERSISTENT"
     disk_size_gb = var.build_cluster_cache_disk_size_gb
-    disk_type    = var.build_cluster_cache_disk_type
+    disk_type    = "pd-standard"
   }
 
   network_interface {
