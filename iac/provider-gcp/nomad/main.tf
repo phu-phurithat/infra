@@ -8,7 +8,11 @@ terraform {
 }
 
 locals {
-  clickhouse_connection_string = var.clickhouse_server_count > 0 ? "clickhouse://${var.clickhouse_username}:${random_password.clickhouse_password.result}@clickhouse.service.consul:${var.clickhouse_server_port.port}/${var.clickhouse_database}" : ""
+  clickhouse_connection_string = var.clickhouse_connection_string != "" ? var.clickhouse_connection_string : (
+    var.clickhouse_server_count > 0 ?
+    "clickhouse://${var.clickhouse_username}:${random_password.clickhouse_password.result}@clickhouse.service.consul:${var.clickhouse_server_port.port}/${var.clickhouse_database}" :
+    ""
+  )
 }
 
 # API
@@ -441,7 +445,7 @@ locals {
     otel_collector_grpc_endpoint = "localhost:${var.otel_collector_grpc_port}"
     allow_sandbox_internet       = var.allow_sandbox_internet
     launch_darkly_api_key        = trimspace(data.google_secret_manager_secret_version.launch_darkly_api_key.secret_data)
-    clickhouse_connection_string = var.clickhouse_server_count > 0 ? "clickhouse://${var.clickhouse_username}:${random_password.clickhouse_password.result}@clickhouse.service.consul:${var.clickhouse_server_port.port}/${var.clickhouse_database}" : ""
+    clickhouse_connection_string = local.clickhouse_connection_string
     redis_url                    = data.google_secret_manager_secret_version.redis_url.secret_data != "redis.service.consul" ? "" : "redis.service.consul:${var.redis_port.port}"
     redis_cluster_url            = data.google_secret_manager_secret_version.redis_url.secret_data != "redis.service.consul" ? "${data.google_secret_manager_secret_version.redis_url.secret_data}:${var.redis_port.port}" : ""
     shared_chunk_cache_path      = var.shared_chunk_cache_path

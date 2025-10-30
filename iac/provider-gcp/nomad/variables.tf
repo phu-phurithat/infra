@@ -326,6 +326,11 @@ variable "clickhouse_database" {
   type = string
 }
 
+variable "clickhouse_connection_string" {
+  type    = string
+  default = ""
+}
+
 variable "clickhouse_server_count" {
   type = number
 }

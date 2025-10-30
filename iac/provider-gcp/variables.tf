@@ -120,6 +120,12 @@ variable "clickhouse_database_name" {
   default     = "default"
 }
 
+variable "clickhouse_connection_string" {
+  description = "External ClickHouse connection string. When non-empty the managed ClickHouse cluster can be disabled."
+  type        = string
+  default     = ""
+}
+
 variable "clickhouse_job_constraint_prefix" {
   description = "The prefix to use for the job constraint of the instance in the metadata."
   type        = string
